@@ -1,12 +1,12 @@
 {
-  "name": "grom358/pharborist",
+  "name": "jcnventura/pharborist",
   "description": "Pharborist builds a syntax tree for PHP that can be traversed and manipulated.",
   "type": "library",
   "keywords": [
     "standards",
     "syntax"
   ],
-  "license": "GPL",
+  "license": "GPL-2.0-or-later",
   "authors": [
     {
       "name": "Cameron Zemek",
@@ -18,7 +18,7 @@
   },
   "require": {
     "php": ">=5.4",
-    "phpdocumentor/reflection-docblock": "2.0.*"
+    "phpdocumentor/reflection-docblock": "^2.0|^3.0.2|^4.0|^5.0"
   },
   "require-dev": {
     "phpunit/phpunit": "4.2.*",

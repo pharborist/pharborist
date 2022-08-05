@@ -2317,7 +2317,7 @@ class Parser {
   private function name() {
     $node = new NameNode();
     if ($this->tryMatch(T_NAMESPACE, $node)) {
-      if (!$this->tryMatch(T_NAME_FULLY_QUALIFIED, $node) && !$this->tryMatch(T_NAME_QUALIFIED, $node) && !$this->tryMatch(T_NAME_RELATIVE, $node)) {
+      if (!$this->tryMatch(T_NAME_FULLY_QUALIFIED, $node, NULL, TRUE) && !$this->tryMatch(T_NAME_QUALIFIED, $node, NULL, TRUE) && !$this->tryMatch(T_NAME_RELATIVE, $node, NULL, TRUE)) {
         $this->mustMatch(T_NS_SEPARATOR, $node);
         $this->mustMatch(T_STRING, $node, NULL, TRUE);
         while ($this->tryMatch(T_NS_SEPARATOR, $node)) {
@@ -2325,7 +2325,7 @@ class Parser {
         }
       }
     }
-    elseif (!$this->tryMatch(T_NAME_FULLY_QUALIFIED, $node) && !$this->tryMatch(T_NAME_QUALIFIED, $node) && !$this->tryMatch(T_NAME_RELATIVE, $node)) {
+    elseif (!$this->tryMatch(T_NAME_FULLY_QUALIFIED, $node, NULL, TRUE) && !$this->tryMatch(T_NAME_QUALIFIED, $node, NULL, TRUE) && !$this->tryMatch(T_NAME_RELATIVE, $node, NULL, TRUE)) {
       if ($this->tryMatch(T_NS_SEPARATOR, $node)) {
         // Absolute path
       }
@@ -2388,7 +2388,7 @@ class Parser {
    */
   private function namespaceName() {
     $node = new NameNode();
-    if ($this->tryMatch(T_NAME_FULLY_QUALIFIED, $node) || $this->tryMatch(T_NAME_QUALIFIED, $node) || $this->tryMatch(T_NAME_RELATIVE, $node)) {
+    if ($this->tryMatch(T_NAME_FULLY_QUALIFIED, $node, NULL, TRUE) || $this->tryMatch(T_NAME_QUALIFIED, $node, NULL, TRUE) || $this->tryMatch(T_NAME_RELATIVE, $node, NULL, TRUE)) {
       return $node;
     }
     else {
@@ -2438,7 +2438,7 @@ class Parser {
   private function useDeclaration() {
     $declaration = new UseDeclarationNode();
     $node = new NameNode();
-    if (!$this->tryMatch(T_NAME_FULLY_QUALIFIED, $node) && !$this->tryMatch(T_NAME_QUALIFIED, $node) && !$this->tryMatch(T_NAME_RELATIVE, $node)) {
+    if (!$this->tryMatch(T_NAME_FULLY_QUALIFIED, $node, NULL, TRUE) && !$this->tryMatch(T_NAME_QUALIFIED, $node, NULL, TRUE) && !$this->tryMatch(T_NAME_RELATIVE, $node, NULL, TRUE)) {
       $this->tryMatch(T_NS_SEPARATOR, $node);
       $this->mustMatch(T_STRING, $node, NULL, TRUE)->getText();
       while ($this->tryMatch(T_NS_SEPARATOR, $node)) {

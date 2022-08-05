@@ -174,6 +174,9 @@ class Parser {
     if (!defined('T_POW_EQUAL')) {
       define('T_POW_EQUAL', '**=');
     }
+    if (!defined('T_AMPERSAND_FOLLOWED_BY_VAR_OR_VARARG')) {
+      define('T_AMPERSAND_FOLLOWED_BY_VAR_OR_VARARG', '&var');
+    }
     $this->expressionParser = new ExpressionParser();
   }
 
@@ -2194,6 +2197,7 @@ class Parser {
       $node->addChild($type, 'typeHint');
     }
     $this->tryMatch('&', $node, 'reference');
+    $this->tryMatch(T_AMPERSAND_FOLLOWED_BY_VAR_OR_VARARG, $node, 'reference');
     $this->tryMatch(T_ELLIPSIS, $node, 'variadic');
     $this->mustMatch(T_VARIABLE, $node, 'name', TRUE);
     if ($this->tryMatch('=', $node)) {

@@ -83,6 +83,11 @@ use Pharborist\Variables\StaticVariableNode;
 use Pharborist\Variables\StaticVariableStatementNode;
 use Pharborist\Variables\VariableVariableNode;
 
+// Backwards compatibility for PHP < 8.0.
+defined('T_NAME_FULLY_QUALIFIED') || define('T_NAME_FULLY_QUALIFIED', 10001);
+defined('T_NAME_QUALIFIED') || define('T_NAME_QUALIFIED', 10002);
+defined('T_NAME_RELATIVE') || define('T_NAME_RELATIVE', 10003);
+
 /**
  * Parses PHP tokens into syntax tree.
  */
@@ -90,7 +95,7 @@ class Parser {
   /**
    * @var array
    */
-  private static $namespacePathTypes = [T_STRING, T_NS_SEPARATOR, T_NAMESPACE];
+  private static $namespacePathTypes = [T_STRING, T_NS_SEPARATOR, T_NAMESPACE, T_NAME_FULLY_QUALIFIED, T_NAME_QUALIFIED, T_NAME_RELATIVE];
 
   /**
    * @var array
@@ -173,6 +178,9 @@ class Parser {
     }
     if (!defined('T_POW_EQUAL')) {
       define('T_POW_EQUAL', '**=');
+    }
+    if (!defined('T_AMPERSAND_FOLLOWED_BY_VAR_OR_VARARG')) {
+      define('T_AMPERSAND_FOLLOWED_BY_VAR_OR_VARARG', '&var');
     }
     $this->expressionParser = new ExpressionParser();
   }
@@ -355,7 +363,7 @@ class Parser {
         if ($this->currentType === T_FUNCTION && $this->isLookAhead(T_STRING, '&')) {
           return $this->functionDeclaration();
         }
-        elseif ($this->currentType === T_NAMESPACE && !$this->isLookAhead(T_NS_SEPARATOR)) {
+        elseif ($this->currentType === T_NAMESPACE && !$this->isLookAhead(T_NS_SEPARATOR) && !$this->isLookAhead(T_NAME_FULLY_QUALIFIED)) {
           return $this->_namespace();
         }
         return $this->statement();
@@ -1343,6 +1351,9 @@ class Parser {
       case T_STRING:
       case T_NS_SEPARATOR:
       case T_NAMESPACE:
+      case T_NAME_FULLY_QUALIFIED:
+      case T_NAME_QUALIFIED:
+      case T_NAME_RELATIVE:
         $namespace_path = $this->name();
         if ($this->currentType === T_DOUBLE_COLON) {
           return $this->exprClass($namespace_path);
@@ -1535,6 +1546,9 @@ class Parser {
       case T_STRING:
       case T_NS_SEPARATOR:
       case T_NAMESPACE:
+      case T_NAME_FULLY_QUALIFIED:
+      case T_NAME_QUALIFIED:
+      case T_NAME_RELATIVE:
         $namespace_path = $this->name();
         if ($this->currentType === T_DOUBLE_COLON) {
           $node = $this->staticMember($namespace_path);
@@ -1872,6 +1886,9 @@ class Parser {
       case T_STRING:
       case T_NS_SEPARATOR:
       case T_NAMESPACE:
+      case T_NAME_FULLY_QUALIFIED:
+      case T_NAME_QUALIFIED:
+      case T_NAME_RELATIVE:
         $namespace_path = $this->name();
         if ($this->currentType === '(') {
           return $this->functionCall($namespace_path);
@@ -2194,6 +2211,7 @@ class Parser {
       $node->addChild($type, 'typeHint');
     }
     $this->tryMatch('&', $node, 'reference');
+    $this->tryMatch(T_AMPERSAND_FOLLOWED_BY_VAR_OR_VARARG, $node, 'reference');
     $this->tryMatch(T_ELLIPSIS, $node, 'variadic');
     $this->mustMatch(T_VARIABLE, $node, 'name', TRUE);
     if ($this->tryMatch('=', $node)) {
@@ -2299,14 +2317,22 @@ class Parser {
   private function name() {
     $node = new NameNode();
     if ($this->tryMatch(T_NAMESPACE, $node)) {
-      $this->mustMatch(T_NS_SEPARATOR, $node);
+      if (!$this->tryMatch(T_NAME_FULLY_QUALIFIED, $node, NULL, TRUE) && !$this->tryMatch(T_NAME_QUALIFIED, $node, NULL, TRUE) && !$this->tryMatch(T_NAME_RELATIVE, $node, NULL, TRUE)) {
+        $this->mustMatch(T_NS_SEPARATOR, $node);
+        $this->mustMatch(T_STRING, $node, NULL, TRUE);
+        while ($this->tryMatch(T_NS_SEPARATOR, $node)) {
+          $this->mustMatch(T_STRING, $node, NULL, TRUE);
+        }
+      }
     }
-    elseif ($this->tryMatch(T_NS_SEPARATOR, $node)) {
-      // Absolute path
-    }
-    $this->mustMatch(T_STRING, $node, NULL, TRUE);
-    while ($this->tryMatch(T_NS_SEPARATOR, $node)) {
+    elseif (!$this->tryMatch(T_NAME_FULLY_QUALIFIED, $node, NULL, TRUE) && !$this->tryMatch(T_NAME_QUALIFIED, $node, NULL, TRUE) && !$this->tryMatch(T_NAME_RELATIVE, $node, NULL, TRUE)) {
+      if ($this->tryMatch(T_NS_SEPARATOR, $node)) {
+        // Absolute path
+      }
       $this->mustMatch(T_STRING, $node, NULL, TRUE);
+      while ($this->tryMatch(T_NS_SEPARATOR, $node)) {
+        $this->mustMatch(T_STRING, $node, NULL, TRUE);
+      }
     }
     return $node;
   }
@@ -2319,7 +2345,7 @@ class Parser {
     $node = new NamespaceNode();
     $this->matchDocComment($node);
     $this->mustMatch(T_NAMESPACE, $node);
-    if ($this->currentType === T_STRING) {
+    if (in_array($this->currentType, [T_STRING, T_NAME_FULLY_QUALIFIED, T_NAME_QUALIFIED, T_NAME_RELATIVE])) {
       $name = $this->namespaceName();
       $node->addChild($name, 'name');
     }
@@ -2346,7 +2372,7 @@ class Parser {
     $node = new StatementBlockNode();
     $this->matchHidden($node);
     while ($this->currentType !== NULL) {
-      if ($this->currentType === T_NAMESPACE && !$this->isLookAhead(T_NS_SEPARATOR)) {
+      if ($this->currentType === T_NAMESPACE && !$this->isLookAhead(T_NS_SEPARATOR) && !$this->isLookAhead(T_NAME_FULLY_QUALIFIED)) {
         break;
       }
       $node->addChild($this->topStatement());
@@ -2362,11 +2388,16 @@ class Parser {
    */
   private function namespaceName() {
     $node = new NameNode();
-    $this->mustMatch(T_STRING, $node, NULL, TRUE);
-    while ($this->tryMatch(T_NS_SEPARATOR, $node)) {
-      $this->mustMatch(T_STRING, $node, NULL, TRUE);
+    if ($this->tryMatch(T_NAME_FULLY_QUALIFIED, $node, NULL, TRUE) || $this->tryMatch(T_NAME_QUALIFIED, $node, NULL, TRUE) || $this->tryMatch(T_NAME_RELATIVE, $node, NULL, TRUE)) {
+      return $node;
     }
-    return $node;
+    else {
+      $this->mustMatch(T_STRING, $node, NULL, TRUE);
+      while ($this->tryMatch(T_NS_SEPARATOR, $node)) {
+        $this->mustMatch(T_STRING, $node, NULL, TRUE);
+      }
+      return $node;
+    }
   }
 
   /**
@@ -2407,10 +2438,12 @@ class Parser {
   private function useDeclaration() {
     $declaration = new UseDeclarationNode();
     $node = new NameNode();
-    $this->tryMatch(T_NS_SEPARATOR, $node);
-    $this->mustMatch(T_STRING, $node, NULL, TRUE)->getText();
-    while ($this->tryMatch(T_NS_SEPARATOR, $node)) {
+    if (!$this->tryMatch(T_NAME_FULLY_QUALIFIED, $node, NULL, TRUE) && !$this->tryMatch(T_NAME_QUALIFIED, $node, NULL, TRUE) && !$this->tryMatch(T_NAME_RELATIVE, $node, NULL, TRUE)) {
+      $this->tryMatch(T_NS_SEPARATOR, $node);
       $this->mustMatch(T_STRING, $node, NULL, TRUE)->getText();
+      while ($this->tryMatch(T_NS_SEPARATOR, $node)) {
+        $this->mustMatch(T_STRING, $node, NULL, TRUE)->getText();
+      }
     }
     $declaration->addChild($node, 'name');
     if ($this->tryMatch(T_AS, $declaration)) {

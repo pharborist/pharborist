@@ -1,5 +1,5 @@
 {
-  "name": "jcnventura/pharborist",
+  "name": "pharborist/pharborist",
   "description": "Pharborist builds a syntax tree for PHP that can be traversed and manipulated.",
   "type": "library",
   "keywords": [

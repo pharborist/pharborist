@@ -4,8 +4,9 @@ namespace Pharborist;
 
 use Pharborist\Objects\ClassMethodNode;
 use Pharborist\Objects\ClassNode;
+use PHPUnit\Framework\TestCase;
 
-class VisibilityTraitTest extends \PHPUnit_Framework_TestCase {
+class VisibilityTraitTest extends TestCase {
   public function testSetVisibility() {
     /** @var ClassNode $class_node */
     $class_node = Parser::parseSnippet('class Foo { public function wrassle() {} }');

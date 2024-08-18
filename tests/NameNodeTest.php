@@ -6,8 +6,9 @@ use Pharborist\Namespaces\NameNode;
 use Pharborist\Namespaces\NamespaceNode;
 use Pharborist\Objects\ClassMethodCallNode;
 use Pharborist\Objects\NewNode;
+use PHPUnit\Framework\TestCase;
 
-class NameNodeTest extends \PHPUnit_Framework_TestCase {
+class NameNodeTest extends TestCase {
   public function testUnqualified() {
     $snippet = <<<'EOF'
 namespace Top\Sub {

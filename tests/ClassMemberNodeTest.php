@@ -5,8 +5,9 @@ namespace Pharborist;
 use Pharborist\Objects\ClassMemberNode;
 use Pharborist\Objects\ClassNode;
 use Pharborist\Types\StringNode;
+use PHPUnit\Framework\TestCase;
 
-class ClassMemberNodeTest extends \PHPUnit_Framework_TestCase {
+class ClassMemberNodeTest extends TestCase {
   public function testCreate() {
     $member = ClassMemberNode::create('lancelot');
     $this->assertInstanceOf('\Pharborist\Objects\ClassMemberListNode', $member);

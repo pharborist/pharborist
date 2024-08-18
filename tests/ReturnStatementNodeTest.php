@@ -4,8 +4,9 @@ namespace Pharborist;
 
 use Pharborist\ControlStructures\ReturnStatementNode;
 use Pharborist\Types\TrueNode;
+use PHPUnit\Framework\TestCase;
 
-class ReturnStatementNodeTest extends \PHPUnit_Framework_TestCase {
+class ReturnStatementNodeTest extends TestCase {
   public function testCreate() {
     $ret = ReturnStatementNode::create(TrueNode::create());
     $this->assertEquals('return TRUE;', $ret->getText());

@@ -9,9 +9,9 @@
     </testsuite>
   </testsuites>
   <!-- Filter for coverage reports. -->
-  <filter>
-    <blacklist>
+  <coverage>
+    <exclude>
       <directory>./vendor</directory>
-    </blacklist>
-  </filter>
+    </exclude>
+  </coverage>
 </phpunit>

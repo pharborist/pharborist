@@ -3,8 +3,9 @@ namespace Pharborist;
 
 use Pharborist\Types\FloatNode;
 use Pharborist\Types\StringNode;
+use PHPUnit\Framework\TestCase;
 
-class ArgumentTraitTest extends \PHPUnit_Framework_TestCase {
+class ArgumentTraitTest extends TestCase {
   public function testAppendArgument() {
     /** @var \Pharborist\Functions\FunctionCallNode $call */
     $call = Parser::parseExpression('foo()');
@@ -39,19 +40,15 @@ class ArgumentTraitTest extends \PHPUnit_Framework_TestCase {
     $this->assertSame($bazbaz, $arguments[0]);
   }
 
-  /**
-   * @expectedException \InvalidArgumentException
-   */
   public function testPrependInvalidArgument() {
+    $this->expectException(\InvalidArgumentException::class);
     /** @var \Pharborist\Functions\FunctionCallNode $call */
     $call = Parser::parseExpression('foo()');
     $call->prependArgument(NULL);
   }
 
-  /**
-   * @expectedException \InvalidArgumentException
-   */
   public function testAppendInvalidArgument() {
+    $this->expectException(\InvalidArgumentException::class);
     /** @var \Pharborist\Functions\FunctionCallNode $call */
     $call = Parser::parseExpression('foo()');
     $call->appendArgument(NULL);
@@ -66,19 +63,15 @@ class ArgumentTraitTest extends \PHPUnit_Framework_TestCase {
     $this->assertInstanceOf('\Pharborist\Types\StringNode', $arguments[0]);
   }
 
-  /**
-   * @expectedException \InvalidArgumentException
-   */
   public function testInsertInvalidArgument() {
+    $this->expectException(\InvalidArgumentException::class);
     /** @var \Pharborist\Functions\FunctionCallNode $call */
     $call = Parser::parseExpression('foo()');
     $call->insertArgument(NULL, 0);
   }
 
-  /**
-   * @expectedException \OutOfBoundsException
-   */
   public function testInsertInvalidIndex() {
+    $this->expectException(\OutOfBoundsException::class);
     /** @var \Pharborist\Functions\FunctionCallNode $call */
     $call = Parser::parseExpression('foo()');
     $call->insertArgument(42, 1);

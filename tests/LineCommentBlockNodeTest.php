@@ -1,7 +1,9 @@
 <?php
 namespace Pharborist;
 
-class LineCommentBlockNodeTest extends \PHPUnit_Framework_TestCase {
+use PHPUnit\Framework\TestCase;
+
+class LineCommentBlockNodeTest extends TestCase {
   public function testCreate() {
     $comment = <<<'EOF'
 hello

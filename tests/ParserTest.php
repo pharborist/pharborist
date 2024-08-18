@@ -58,11 +58,12 @@ use Pharborist\Variables\GlobalStatementNode;
 use Pharborist\Variables\ReferenceVariableNode;
 use Pharborist\Variables\StaticVariableStatementNode;
 use Pharborist\Variables\VariableVariableNode;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Tests Phaborist\Parser.
  */
-class ParserTest extends \PHPUnit_Framework_TestCase {
+class ParserTest extends TestCase {
 
   /**
    * Tests \Pharborist\Parser::parseFile().
@@ -233,10 +234,10 @@ class ParserTest extends \PHPUnit_Framework_TestCase {
 
   /**
    * Test inner halt compiler is an error.
-   * @expectedException \Pharborist\ParserException
-   * @expectedExceptionMessage __halt_compiler can only be used from the outermost scope
    */
   public function testInnerHaltCompiler() {
+    $this->expectException(ParserException::class);
+    $this->expectExceptionMessage('__halt_compiler can only be used from the outermost scope');
     $this->parseSnippet("{ __halt_compiler(); }", '\Pharborist\Functions\HaltCompilerNode');
   }
 
@@ -476,20 +477,16 @@ EOF;
     $this->assertEquals('MY_CONST', $const->getName()->getText());
   }
 
-  /**
-   * @expectedException \Pharborist\ParserException
-   * @expectedExceptionMessage Traits can only be composed from other traits with the 'use' keyword.
-   */
   public function testTraitExtends() {
+    $this->expectException(ParserException::class);
+    $this->expectExceptionMessage("Traits can only be composed from other traits with the 'use' keyword.");
     $snippet = 'trait MyTrait extends BaseTrait {}' . PHP_EOL;
     $this->parseSnippet($snippet, '\Pharborist\Objects\TraitNode');
   }
 
-  /**
-   * @expectedException \Pharborist\ParserException
-   * @expectedExceptionMessage Traits can not implement interfaces.
-   */
   public function testTraitImplements() {
+    $this->expectException(ParserException::class);
+    $this->expectExceptionMessage('Traits can not implement interfaces.');
     $snippet = 'trait MyTrait implements TestInterface {}' . PHP_EOL;
     $this->parseSnippet($snippet, '\Pharborist\Objects\TraitNode');
   }
@@ -1447,10 +1444,10 @@ EOF';
 
   /**
    * Test invalid comparison expression.
-   * @expectedException \Pharborist\ParserException
-   * @expectedExceptionMessage Non-associative operators of equal precedence can not be next to each other!
    */
   public function testInvalidComparison() {
+    $this->expectException(ParserException::class);
+    $this->expectExceptionMessage('Non-associative operators of equal precedence can not be next to each other!');
     $this->parseExpression('1 <= 1 == 2 >= 2 == 2', '\Pharborist\Operators\EqualNode');
   }
 

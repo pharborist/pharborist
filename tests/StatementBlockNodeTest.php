@@ -1,7 +1,9 @@
 <?php
 namespace Pharborist;
 
-class StatementBlockNodeTest extends \PHPUnit_Framework_TestCase {
+use PHPUnit\Framework\TestCase;
+
+class StatementBlockNodeTest extends TestCase {
   public function testAppendStatement() {
     /** @var \Pharborist\ControlStructures\IfNode $ifNode */
     $ifNode = Parser::parseSnippet('if (TRUE) { hello(); }');

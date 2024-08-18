@@ -3,8 +3,9 @@
 namespace Pharborist;
 
 use Pharborist\Types\StringNode;
+use PHPUnit\Framework\TestCase;
 
-class StringNodeTest extends \PHPUnit_Framework_TestCase {
+class StringNodeTest extends TestCase {
   public function testGetValue() {
     $string = StringNode::create('\'Goodbye, cruel world!\'');
     $this->assertEquals('Goodbye, cruel world!', $string->toValue());

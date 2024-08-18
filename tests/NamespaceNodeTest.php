@@ -3,8 +3,9 @@ namespace Pharborist;
 
 use Pharborist\Namespaces\NamespaceNode;
 use Pharborist\Objects\ClassNode;
+use PHPUnit\Framework\TestCase;
 
-class NamespaceNodeTest extends \PHPUnit_Framework_TestCase {
+class NamespaceNodeTest extends TestCase {
   public function testCreate() {
     $namespace_node = NamespaceNode::create('\Top\Sub');
     $this->assertEquals('\Top\Sub', $namespace_node->getName()->getAbsolutePath());

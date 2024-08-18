@@ -2,7 +2,9 @@
 
 namespace Pharborist;
 
-class RootNodeTest extends \PHPUnit_Framework_TestCase {
+use PHPUnit\Framework\TestCase;
+
+class RootNodeTest extends TestCase {
   public function testCreate() {
     $doc = RootNode::create();
     $this->assertEquals("<?php\n", $doc->getText());

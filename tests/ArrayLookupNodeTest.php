@@ -2,8 +2,9 @@
 namespace Pharborist;
 
 use Pharborist\Types\StringNode;
+use PHPUnit\Framework\TestCase;
 
-class ArrayLookupNodeTest extends \PHPUnit_Framework_TestCase {
+class ArrayLookupNodeTest extends TestCase {
   public function testCreate() {
     $lookup = ArrayLookupNode::create(Token::variable('$form_state'), new StringNode(T_CONSTANT_ENCAPSED_STRING, "'storage'"));
     $this->assertEquals('$form_state[\'storage\']', $lookup->getText());
@@ -12,7 +13,7 @@ class ArrayLookupNodeTest extends \PHPUnit_Framework_TestCase {
   public function testGetKeys() {
     $lookup = Parser::parseExpression('$foo["bar"]["baz"]');
     $keys = $lookup->getKeys();
-    $this->assertInternalType('array', $keys);
+    $this->assertIsArray($keys);
     $this->assertCount(2, $keys);
     $this->assertInstanceOf('\Pharborist\Types\StringNode', $keys[0]);
     $this->assertEquals('bar', $keys[0]->toValue());
@@ -29,10 +30,8 @@ class ArrayLookupNodeTest extends \PHPUnit_Framework_TestCase {
     $this->assertSame(['bar', 'baz', 3], Parser::parseExpression('$foo["bar"]["baz"][3]')->extractKeys());
   }
 
-  /**
-   * @expectedException \DomainException
-   */
   public function testExtractNonScalarKeys() {
+    $this->expectException(\DomainException::class);
     Parser::parseExpression('$foo[$bar][baz()][30]')->extractKeys();
   }
 

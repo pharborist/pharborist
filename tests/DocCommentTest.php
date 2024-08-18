@@ -2,8 +2,9 @@
 namespace Pharborist;
 
 use Pharborist\Objects\ClassMethodNode;
+use PHPUnit\Framework\TestCase;
 
-class DocCommentTest extends \PHPUnit_Framework_TestCase {
+class DocCommentTest extends TestCase {
   public function testAddDocComment() {
     $original = <<<'EOF'
 <?php

@@ -2,12 +2,13 @@
 namespace Pharborist;
 
 use Pharborist\Operators\BinaryOperationNode;
+use PHPUnit\Framework\TestCase;
 
-class BinaryOperationNodeTest extends \PHPUnit_Framework_TestCase {
+class BinaryOperationNodeTest extends TestCase {
   /** @var BinaryOperationNode $op */
   private $op;
 
-  public function __construct() {
+  public function setup(): void {
     $this->op = Parser::parseSnippet('$doAliensExist = TRUE;')->firstChild();
   }
 

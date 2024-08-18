@@ -2,8 +2,9 @@
 namespace Pharborist;
 
 use Pharborist\Types\ArrayNode;
+use PHPUnit\Framework\TestCase;
 
-class ArrayNodeTest extends \PHPUnit_Framework_TestCase {
+class ArrayNodeTest extends TestCase {
   private function toScalar(Node $node) {
     return $node->toValue();
   }

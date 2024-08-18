@@ -2,8 +2,9 @@
 namespace Pharborist;
 
 use Pharborist\Operators\BooleanNotNode;
+use PHPUnit\Framework\TestCase;
 
-class BooleanNotNodeTest extends \PHPUnit_Framework_TestCase {
+class BooleanNotNodeTest extends TestCase {
   public function testCreate() {
     $expr = Parser::parseExpression('empty($foo)');
     $not = BooleanNotNode::fromExpression($expr);

@@ -73,33 +73,14 @@ class NameNode extends ParentNode {
   }
 
   /**
-   * Return information about the name.
-   * @return array
-   */
-  public function getPathInfo() {
-    /** @var TokenNode $first */
-    $first = $this->firstChild();
-    $absolute = $first->getType() === T_NS_SEPARATOR;
-    $relative = $first->getType() === T_NAMESPACE;
-    $parts = $this->getParts();
-    return [
-      'absolute' => $absolute,
-      'relative' => $relative,
-      'qualified' => !$absolute && count($parts) > 1,
-      'unqualified' => !$absolute && count($parts) === 1,
-      'parts' => $parts,
-    ];
-  }
-
-  /**
    * Return TRUE if the name is an absolute name.
    * Eg. \TopNamespace\SubNamespace\MyClass
    * @return bool
    */
   public function isAbsolute() {
-    /** @var TokenNode $first */
     $first = $this->firstChild();
-    return $first->getType() === T_NS_SEPARATOR;
+    assert($first instanceof TokenNode);
+    return in_array($first->getType(), [T_NAME_FULLY_QUALIFIED, T_NS_SEPARATOR], TRUE);
   }
 
   /**
@@ -108,9 +89,9 @@ class NameNode extends ParentNode {
    * @return bool
    */
   public function isRelative() {
-    /** @var TokenNode $first */
     $first = $this->firstChild();
-    return $first->getType() === T_NAMESPACE;
+    assert($first instanceof TokenNode);
+    return in_array($first->getType(), [T_NAME_RELATIVE, T_NAMESPACE], TRUE);
   }
 
   /**
@@ -119,9 +100,9 @@ class NameNode extends ParentNode {
    * @return bool
    */
   public function isUnqualified() {
-    $absolute = $this->isAbsolute();
-    $parts = $this->getParts();
-    return !$absolute && count($parts) === 1;
+    $first = $this->firstChild();
+    assert($first instanceof TokenNode);
+    return $first->getType() === T_STRING && count($this->getParts()) === 1;
   }
 
   /**
@@ -130,9 +111,9 @@ class NameNode extends ParentNode {
    * @return bool
    */
   public function isQualified() {
-    $absolute = $this->isAbsolute();
-    $parts = $this->getParts();
-    return !$absolute && count($parts) > 1;
+    $first = $this->firstChild();
+    assert($first instanceof TokenNode);
+    return $first->getType() === T_NAME_QUALIFIED || ($first->getType() === T_STRING && count($this->getParts()) > 1);
   }
 
   /**
@@ -142,14 +123,39 @@ class NameNode extends ParentNode {
     $parts = [];
     /** @var TokenNode $child */
     $child = $this->head;
+    $types = [
+      T_STRING,
+      T_NAME_FULLY_QUALIFIED,
+      T_NAME_QUALIFIED,
+      T_NAME_RELATIVE
+    ];
     while ($child) {
       $type = $child->getType();
-      if ($type === T_NAMESPACE || $type === T_STRING) {
+      if (in_array($type, $types, TRUE)) {
         $parts[] = $child;
       }
       $child = $child->next;
     }
     return $parts;
+  }
+
+  /**
+   * Returns the parts of the path between the separators as an array.
+   *
+   * For example \Path\To\Class would return ['Path', 'To', 'Class'].
+   *
+   * @return string[]
+   *   An indexed array of path parts.
+   */
+  public function getPathParts(): array {
+    if ($this->childCount() === 1) {
+      $first = $this->firstChild();
+      assert($first instanceof TokenNode);
+      $text = $first->getText();
+      return explode('\\', ltrim($text, '\\'));
+    }
+
+    return array_map(fn (TokenNode $node): string => $node->getText(), $this->getParts());
   }
 
   /**
@@ -162,7 +168,15 @@ class NameNode extends ParentNode {
     $child = $this->head;
     while ($child) {
       $type = $child->getType();
-      if ($type === T_NAMESPACE || $type === T_NS_SEPARATOR || $type === T_STRING) {
+      $types = [
+        T_NAMESPACE,
+        T_NAME_FULLY_QUALIFIED,
+        T_NAME_QUALIFIED,
+        T_NAME_RELATIVE,
+        T_NS_SEPARATOR,
+        T_STRING,
+      ];
+      if (in_array($type, $types, TRUE)) {
         $path .= $child->getText();
       }
       $child = $child->next;
@@ -234,22 +248,18 @@ class NameNode extends ParentNode {
    *   The absolute namespace path.
    */
   public function getAbsolutePath() {
-    /** @var TokenNode[] $parts */
-    $info = $this->getPathInfo();
-    $absolute = $info['absolute'];
-    $relative = $info['relative'];
-    $parts = $info['parts'];
+    $parts = $this->getPathParts();
 
-    if (!$absolute && !$relative) {
-      $path = $this->resolveUnqualified($parts[0]->getText());
+    if (!$this->isAbsolute() && !$this->isRelative()) {
+      $path = $this->resolveUnqualified($parts[0]);
       unset($parts[0]);
       if (!empty($parts)) {
         $path .= '\\';
       }
     }
     else {
-      $path = $absolute ? '\\' : $this->getParentPath();
-      if ($parts[0]->getType() === T_NAMESPACE) {
+      $path = $this->isAbsolute() ? '\\' : $this->getParentPath();
+      if ($this->isRelative()) {
         unset($parts[0]);
       }
     }

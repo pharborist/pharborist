@@ -2902,7 +2902,7 @@ class Parser {
         $end = $i;
         for ($j = $i + 1; $j < $n; $j++) {
           $token = $skipped[$j];
-          if ($token instanceof WhitespaceNode && $token->getNewlineCount() === 0) {
+          if ($token instanceof WhitespaceNode && $token->getNewlineCount() === 1) {
             $j++;
             $token = $j < $n ? $skipped[$j] : NULL;
           }

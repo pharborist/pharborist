@@ -511,20 +511,16 @@ class Formatter extends VisitorBase {
   }
 
   public function visitLineCommentBlockNode(LineCommentBlockNode $node) {
-    if ($this->indentLevel > 0) {
-      $indent = $this->getIndent();
-      foreach ($node->children(Filter::isInstanceOf('\Pharborist\CommentNode'))->slice(1) as $line_comment) {
-        $prev = $line_comment->previous();
-        if ($prev instanceof WhitespaceNode) {
-          $prev->setText($indent);
-        }
-        else {
-          $line_comment->before(Token::whitespace($indent));
-        }
+    $indent = $this->getIndent();
+    foreach ($node->children(Filter::isInstanceOf('\Pharborist\CommentNode'))->slice(1) as $line_comment) {
+      $prev = $line_comment->previous();
+      if ($prev instanceof WhitespaceNode) {
+        $prev_text = rtrim($prev->getText(), ' ');
+        $prev->setText($prev_text . $indent);
       }
-    }
-    else {
-      $node->children(Filter::isInstanceOf('\Pharborist\WhitespaceNode'))->remove();
+      elseif ($indent) {
+        $line_comment->before(Token::whitespace($indent));
+      }
     }
   }
 

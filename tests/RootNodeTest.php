@@ -33,6 +33,7 @@ class RootNodeTest extends TestCase {
     $this->assertInstanceOf('\Pharborist\Namespaces\NamespaceNode', $ns);
     $this->assertSame($ns, $namespaces[0]);
 
+    // Note the code below is valid for PHP 5.3-7.4.
     $code = <<<'END'
 <?php
 namespace RoundTable\

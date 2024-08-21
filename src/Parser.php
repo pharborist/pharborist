@@ -360,7 +360,7 @@ class Parser {
         $this->tryMatch(T_INLINE_HTML, $node);
         return $node;
       default:
-        if ($this->currentType === T_FUNCTION && $this->isLookAhead(T_STRING, '&')) {
+        if ($this->currentType === T_FUNCTION && $this->isLookAhead(T_STRING, T_AMPERSAND_NOT_FOLLOWED_BY_VAR_OR_VARARG)) {
           return $this->functionDeclaration();
         }
         elseif ($this->currentType === T_NAMESPACE && !$this->isLookAhead(T_NS_SEPARATOR) && !$this->isLookAhead(T_NAME_FULLY_QUALIFIED)) {
@@ -977,7 +977,7 @@ class Parser {
       return $this->_list();
     }
     else {
-      if ($this->currentType === '&') {
+      if ($this->currentType === T_AMPERSAND_FOLLOWED_BY_VAR_OR_VARARG) {
         return $this->writeVariable();
       }
       else {
@@ -1269,9 +1269,9 @@ class Parser {
           return $operator;
         }
       }
-      elseif ($token_type === '=' && $this->currentType === '&') {
+      elseif ($token_type === '=' && $this->currentType === T_AMPERSAND_FOLLOWED_BY_VAR_OR_VARARG) {
         $by_ref_node = new PartialNode();
-        $this->mustMatch('&', $by_ref_node);
+        $this->mustMatch(T_AMPERSAND_FOLLOWED_BY_VAR_OR_VARARG, $by_ref_node);
         return OperatorFactory::createAssignReferenceOperator($operator, $by_ref_node);
       }
       return $operator;
@@ -1473,7 +1473,7 @@ class Parser {
       $this->filename,
       $this->iterator->getLineNumber(),
       $this->iterator->getColumnNumber(),
-      "excepted expression operand but got " . $this->current->getTypeName());
+      "expected expression operand but got " . $this->current->getTypeName());
   }
 
   /**
@@ -1499,15 +1499,15 @@ class Parser {
       $node->addChild($static);
     }
     $this->mustMatch(T_FUNCTION, $node);
-    $this->tryMatch('&', $node, 'reference');
+    $this->tryMatch(T_AMPERSAND_NOT_FOLLOWED_BY_VAR_OR_VARARG, $node, 'reference');
     $this->parameterList($node);
     if ($this->tryMatch(T_USE, $node, 'lexicalUse')) {
       $this->mustMatch('(', $node, 'lexicalOpenParen');
       $lexical_vars_node = new CommaListNode();
       do {
-        if ($this->currentType === '&') {
+        if ($this->currentType === T_AMPERSAND_FOLLOWED_BY_VAR_OR_VARARG) {
           $var = new ReferenceVariableNode();
-          $this->mustMatch('&', $var);
+          $this->mustMatch(T_AMPERSAND_FOLLOWED_BY_VAR_OR_VARARG, $var);
           $this->mustMatch(T_VARIABLE, $var, 'variable', TRUE);
           $lexical_vars_node->addChild($var);
         }
@@ -1657,7 +1657,7 @@ class Parser {
    * @return Node
    */
   private function arrayPair() {
-    if ($this->currentType === '&') {
+    if ($this->currentType === T_AMPERSAND_FOLLOWED_BY_VAR_OR_VARARG) {
       return $this->writeVariable();
     }
     $node = $this->expr();
@@ -1666,7 +1666,7 @@ class Parser {
       $node = new ArrayPairNode();
       $node->addChild($expr, 'key');
       $this->mustMatch(T_DOUBLE_ARROW, $node);
-      if ($this->currentType === '&') {
+      if ($this->currentType === T_AMPERSAND_FOLLOWED_BY_VAR_OR_VARARG) {
         $node->addChild($this->writeVariable(), 'value');
       }
       else {
@@ -1682,7 +1682,7 @@ class Parser {
    */
   private function writeVariable() {
     $node = new ReferenceVariableNode();
-    $this->mustMatch('&', $node);
+    $this->mustMatch(T_AMPERSAND_FOLLOWED_BY_VAR_OR_VARARG, $node);
     $node->addChild($this->variable(), 'variable');
     return $node;
   }
@@ -2139,7 +2139,7 @@ class Parser {
    */
   private function functionCallParameter() {
     switch ($this->currentType) {
-      case '&':
+      case T_AMPERSAND_FOLLOWED_BY_VAR_OR_VARARG:
         return $this->writeVariable();
       case T_ELLIPSIS:
         $node = new SplatNode();
@@ -2174,7 +2174,7 @@ class Parser {
     $node = new FunctionDeclarationNode();
     $this->matchDocComment($node);
     $this->mustMatch(T_FUNCTION, $node);
-    $this->tryMatch('&', $node, 'reference');
+    $this->tryMatch(T_AMPERSAND_FOLLOWED_BY_VAR_OR_VARARG, $node, 'reference');
     $name_node = new NameNode();
     $this->mustMatch(T_STRING, $name_node, NULL, TRUE);
     $node->addChild($name_node, 'name');
@@ -2210,7 +2210,6 @@ class Parser {
     if ($type = $this->optionalTypeHint()) {
       $node->addChild($type, 'typeHint');
     }
-    $this->tryMatch('&', $node, 'reference');
     $this->tryMatch(T_AMPERSAND_FOLLOWED_BY_VAR_OR_VARARG, $node, 'reference');
     $this->tryMatch(T_ELLIPSIS, $node, 'variadic');
     $this->mustMatch(T_VARIABLE, $node, 'name', TRUE);
@@ -2303,7 +2302,7 @@ class Parser {
       case T_TRAIT:
         return $this->traitDeclaration();
       default:
-        if ($this->currentType === T_FUNCTION && $this->isLookAhead(T_STRING, '&')) {
+        if ($this->currentType === T_FUNCTION && $this->isLookAhead(T_STRING, T_AMPERSAND_NOT_FOLLOWED_BY_VAR_OR_VARARG)) {
           return $this->functionDeclaration();
         }
         return $this->statement();
@@ -2661,7 +2660,7 @@ class Parser {
     $node->mergeNode($doc_comment);
     $node->mergeNode($modifiers);
     $this->mustMatch(T_FUNCTION, $node);
-    $this->tryMatch('&', $node, 'reference');
+    $this->tryMatch(T_AMPERSAND_FOLLOWED_BY_VAR_OR_VARARG, $node, 'reference');
     $this->mustMatch(T_STRING, $node, 'name');
     $this->parameterList($node);
     if ($modifiers->getAbstract()) {
@@ -2809,7 +2808,7 @@ class Parser {
     }
     !$is_static && $this->tryMatch(T_STATIC, $node, 'static');
     $this->mustMatch(T_FUNCTION, $node);
-    $this->tryMatch('&', $node, 'reference');
+    $this->tryMatch(T_AMPERSAND_FOLLOWED_BY_VAR_OR_VARARG, $node, 'reference');
     $this->mustMatch(T_STRING, $node, 'name');
     $this->parameterList($node);
     $this->endStatement($node);

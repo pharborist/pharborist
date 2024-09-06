@@ -1,13 +1,15 @@
 <?php
 namespace Pharborist;
 
-class ObjectMethodCallNodeTest extends \PHPUnit_Framework_TestCase {
+use PHPUnit\Framework\TestCase;
+
+class ObjectMethodCallNodeTest extends TestCase {
   /**
    * @var \Pharborist\Objects\ObjectMethodCallNode
    */
   private $call;
 
-  public function __construct() {
+  public function setup(): void {
     $this->call = Parser::parseSnippet('$mulder->scully();')->firstChild();
   }
 

@@ -2,8 +2,9 @@
 namespace Pharborist;
 
 use Pharborist\Objects\ClassNode;
+use PHPUnit\Framework\TestCase;
 
-class DocCommentTraittest extends \PHPUnit_Framework_TestCase {
+class DocCommentTraittest extends TestCase {
 
   public function testCreateDocComment() {
     $node = ClassNode::create('Foo');

@@ -1,10 +1,12 @@
 <?php
 namespace Pharborist;
 
+use PHPUnit\Framework\TestCase;
+
 /**
  * Tests the various filters provided by the filter factory.
  */
-class FilterTest extends \PHPUnit_Framework_TestCase {
+class FilterTest extends TestCase {
   public function testIsInstanceOf() {
     $source = <<<'END'
 <?php

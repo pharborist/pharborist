@@ -1,7 +1,9 @@
 <?php
 namespace Pharborist;
 
-class WhitespaceNodeTest extends \PHPUnit_Framework_TestCase {
+use PHPUnit\Framework\TestCase;
+
+class WhitespaceNodeTest extends TestCase {
   public function testNewlineCount() {
     $node = Token::whitespace(" \n  \n\n \n  ");
     $this->assertEquals(4, $node->getNewlineCount());

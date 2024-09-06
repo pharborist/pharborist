@@ -1,13 +1,15 @@
 <?php
 namespace Pharborist;
 
-class Psr2FormatterTest extends \PHPUnit_Framework_TestCase {
+use PHPUnit\Framework\TestCase;
+
+class Psr2FormatterTest extends TestCase {
   /**
    * @var Formatter
    */
   protected $formatter;
 
-  public function setUp() {
+  public function setUp(): void {
     $this->formatter = FormatterFactory::getPsr2Formatter();
   }
 

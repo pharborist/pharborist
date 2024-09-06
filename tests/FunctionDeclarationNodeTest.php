@@ -3,8 +3,9 @@
 namespace Pharborist;
 
 use Pharborist\Functions\FunctionDeclarationNode;
+use PHPUnit\Framework\TestCase;
 
-class FunctionDeclarationNodeTest extends \PHPUnit_Framework_TestCase {
+class FunctionDeclarationNodeTest extends TestCase {
   public function testCloneAsMethodOf() {
     /** @var \Pharborist\Objects\ClassNode $class */
     $class = Parser::parseSnippet('class Camelot {}');

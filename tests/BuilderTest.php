@@ -10,11 +10,12 @@ use Pharborist\Objects\ClassMethodNode;
 use Pharborist\Objects\ClassNode;
 use Pharborist\Objects\InterfaceNode;
 use Pharborist\Objects\ObjectMethodCallNode;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Tests builder methods.
  */
-class BuilderTest extends \PHPUnit_Framework_TestCase {
+class BuilderTest extends TestCase {
   public function testBuildClass() {
     $classNode = ClassNode::create('MyClass');
     $this->assertEquals('class MyClass {}', $classNode->getText());

@@ -3,8 +3,9 @@ namespace Pharborist;
 
 use Pharborist\Types\ArrayNode;
 use Pharborist\Types\ArrayPairNode;
+use PHPUnit\Framework\TestCase;
 
-class NodeTest extends \PHPUnit_Framework_TestCase {
+class NodeTest extends TestCase {
   /**
    * Create mock ParentNode.
    * @return ParentNode
@@ -179,10 +180,8 @@ class NodeTest extends \PHPUnit_Framework_TestCase {
     $this->assertEquals('beforeNode', $targets[1]->previous()->getText());
   }
 
-  /**
-   * @expectedException \InvalidArgumentException
-   */
   public function testInvalidInsertBefore() {
+    $this->expectException(\InvalidArgumentException::class);
     $node = $this->createNode('test');
     $node->insertBefore(NULL);
   }
@@ -203,10 +202,8 @@ class NodeTest extends \PHPUnit_Framework_TestCase {
     $this->assertEquals('first', $before_node->previous()->previous()->getText());
   }
 
-  /**
-   * @expectedException \InvalidArgumentException
-   */
   public function testInvalidBefore() {
+    $this->expectException(\InvalidArgumentException::class);
     $node = $this->createNode('test');
     $node->before(NULL);
   }
@@ -228,10 +225,8 @@ class NodeTest extends \PHPUnit_Framework_TestCase {
     $this->assertEquals('afterNode', $targets[1]->next()->getText());
   }
 
-  /**
-   * @expectedException \InvalidArgumentException
-   */
   public function testInvalidInsertAfter() {
+    $this->expectException(\InvalidArgumentException::class);
     $node = $this->createNode('test');
     $node->insertAfter(NULL);
   }
@@ -252,10 +247,8 @@ class NodeTest extends \PHPUnit_Framework_TestCase {
     $this->assertEquals('second', $after_node->next()->next()->getText());
   }
 
-  /**
-   * @expectedException \InvalidArgumentException
-   */
   public function testInvalidAfter() {
+    $this->expectException(\InvalidArgumentException::class);
     $node = $this->createNode('test');
     $node->after(NULL);
   }
@@ -281,10 +274,8 @@ class NodeTest extends \PHPUnit_Framework_TestCase {
     $this->assertEquals('head', $targets[1]->firstChild()->getText());
   }
 
-  /**
-   * @expectedException \InvalidArgumentException
-   */
   public function testInvalidPrependTo() {
+    $this->expectException(\InvalidArgumentException::class);
     $node = $this->createNode('test');
     $node->prependTo(NULL);
   }
@@ -310,10 +301,8 @@ class NodeTest extends \PHPUnit_Framework_TestCase {
     $this->assertEquals('tail', $targets[1]->firstChild()->getText());
   }
 
-  /**
-   * @expectedException \InvalidArgumentException
-   */
   public function testInvalidAppendTo() {
+    $this->expectException(\InvalidArgumentException::class);
     $node = $this->createNode('test');
     $node->appendTo(NULL);
   }
@@ -414,10 +403,8 @@ class NodeTest extends \PHPUnit_Framework_TestCase {
     $this->assertEquals('replacement_after', $parent->lastChild()->getText());
   }
 
-  /**
-   * @expectedException \InvalidArgumentException
-   */
   public function testInvalidReplaceWith() {
+    $this->expectException(\InvalidArgumentException::class);
     $node = $this->createNode('test');
     $node->appendTo($this->createParentNode());
     $node->replaceWith(NULL);
@@ -453,10 +440,8 @@ class NodeTest extends \PHPUnit_Framework_TestCase {
     $this->assertEquals('replacement', $parents[1]->firstChild()->getText());
   }
 
-  /**
-   * @expectedException \InvalidArgumentException
-   */
   public function testInvalidReplaceAll() {
+    $this->expectException(\InvalidArgumentException::class);
     $node = $this->createNode('test');
     $node->replaceAll(NULL);
   }
@@ -600,10 +585,8 @@ class NodeTest extends \PHPUnit_Framework_TestCase {
     $this->assertSame('num', $items[42]);
   }
 
-  /**
-   * @expectedException \InvalidArgumentException
-   */
   public function testFromScalarInvalidArgument() {
+    $this->expectException(\InvalidArgumentException::class);
     $node = Node::fromValue(new \stdClass());
   }
 

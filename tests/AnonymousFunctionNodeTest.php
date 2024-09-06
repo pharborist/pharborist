@@ -2,8 +2,9 @@
 namespace Pharborist;
 
 use Pharborist\Functions\AnonymousFunctionNode;
+use PHPUnit\Framework\TestCase;
 
-class AnonymousFunctionNodeTest extends \PHPUnit_Framework_TestCase {
+class AnonymousFunctionNodeTest extends TestCase {
   public function testReference() {
     /** @var AnonymousFunctionNode $func */
     $func = Parser::parseExpression('function () {}');
@@ -56,19 +57,15 @@ class AnonymousFunctionNodeTest extends \PHPUnit_Framework_TestCase {
     $this->assertEquals('function () {}', $func->getText());
   }
 
-  /**
-   * @expectedException \OutOfBoundsException
-   */
   public function testInsertNegativeIndex() {
+    $this->expectException(\OutOfBoundsException::class);
     /** @var AnonymousFunctionNode $func */
     $func = Parser::parseExpression('function () use ($b) {}');
     $func->insertLexicalVariable(Token::variable('$a'), -1);
   }
 
-  /**
-   * @expectedException \OutOfBoundsException
-   */
   public function testInsertOutOfBoundsEmpty() {
+    $this->expectException(\OutOfBoundsException::class);
     /** @var AnonymousFunctionNode $func */
     $func = Parser::parseExpression('function () {}');
     $func->insertLexicalVariable(Token::variable('$a'), 1);

@@ -1,7 +1,9 @@
 <?php
 namespace Pharborist;
 
-class DrupalFormatterTest extends \PHPUnit_Framework_TestCase {
+use PHPUnit\Framework\TestCase;
+
+class DrupalFormatterTest extends TestCase {
   protected function formatSnippet($snippet) {
     /** @var ParentNode $node */
     $node = Parser::parseSnippet($snippet);

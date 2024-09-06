@@ -2,7 +2,9 @@
 
 namespace Pharborist;
 
-class RootNodeTest extends \PHPUnit_Framework_TestCase {
+use PHPUnit\Framework\TestCase;
+
+class RootNodeTest extends TestCase {
   public function testCreate() {
     $doc = RootNode::create();
     $this->assertEquals("<?php\n", $doc->getText());
@@ -31,6 +33,7 @@ class RootNodeTest extends \PHPUnit_Framework_TestCase {
     $this->assertInstanceOf('\Pharborist\Namespaces\NamespaceNode', $ns);
     $this->assertSame($ns, $namespaces[0]);
 
+    // Note the code below is valid for PHP 5.3-7.4.
     $code = <<<'END'
 <?php
 namespace RoundTable\

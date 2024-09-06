@@ -271,13 +271,14 @@ EOF;
         return static::decrement();
       case '++':
         return static::increment();
+      case '&':
+        return static::bitwiseAnd();
       case '`':
       case '~':
       case '!':
       case '@':
       case '%':
       case '^':
-      case '&':
       case '*':
       case '(':
       case ')':
@@ -355,7 +356,7 @@ EOF;
   }
 
   public static function bitwiseAnd() {
-    return new TokenNode('&', '&');
+    return new TokenNode(T_AMPERSAND_NOT_FOLLOWED_BY_VAR_OR_VARARG, '&');
   }
 
   public static function bitwiseAndAssign() {
@@ -798,8 +799,12 @@ EOF;
     return new TokenNode(T_PRIVATE, 'private');
   }
 
-  public static function reference() {
-    return new TokenNode('&', '&');
+  public static function nonVariableReference() {
+    return new TokenNode(T_AMPERSAND_NOT_FOLLOWED_BY_VAR_OR_VARARG, '&');
+  }
+
+  public static function variableReference() {
+    return new TokenNode(T_AMPERSAND_FOLLOWED_BY_VAR_OR_VARARG, '&');
   }
 
   public static function _require() {

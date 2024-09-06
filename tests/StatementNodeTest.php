@@ -1,7 +1,9 @@
 <?php
 namespace Pharborist;
 
-class StatementNodeTest extends \PHPUnit_Framework_TestCase {
+use PHPUnit\Framework\TestCase;
+
+class StatementNodeTest extends TestCase {
   public function testGetLineCount() {
     $text = <<<'END'
 class Foobar {
@@ -76,10 +78,8 @@ END;
     $this->assertEquals($expected, $node->parent()->getText());
   }
 
-  /**
-   * @expectedException \InvalidArgumentException
-   */
   public function testInvalidCommentAbove() {
+    $this->expectException(\InvalidArgumentException::class);
     $original = '$value = variable_get("my_variable", NULL);';
     /** @var StatementNode $statement_node */
     $statement_node = Parser::parseSnippet($original);

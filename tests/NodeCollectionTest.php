@@ -19,10 +19,7 @@ class NodeCollectionTest extends TestCase {
    * @return Node
    */
   protected function createNode() {
-    static $counter = 1;
-    $mock = $this->getMockForAbstractClass('\Pharborist\Node');
-    $mock->id = $counter++;
-    return $mock;
+    return $this->getMockForAbstractClass('\Pharborist\Node');
   }
 
   public function testParent() {
@@ -402,16 +399,12 @@ class NodeCollectionTest extends TestCase {
   public function testReplaceWith() {
     $root = new RootNode();
     $parent_one = $this->createParentNode();
-    $parent_one->name = 'parent_one';
     $parent_one->appendTo($root);
     $one = $this->createNode();
-    $one->name = 'one';
     $one->appendTo($parent_one);
     $parent_two = $this->createParentNode();
-    $parent_two->name = 'parent_two';
     $parent_two->appendTo($root);
     $first = $this->createNode();
-    $first->name = 'first';
     $first->appendTo($parent_two);
     $replacement = new TokenNode(T_STRING, 'replacement');
     $collection = new NodeCollection([$one, $first], FALSE);

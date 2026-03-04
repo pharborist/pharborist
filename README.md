@@ -35,4 +35,3 @@ if ($namespaces->count() > 1) {
   die('More then one namespace at line ' . $namespaces[1]->getLineNumber() . PHP_EOL);
 }
 ```
-[![Build Status](https://travis-ci.org/grom358/pharborist.png?branch=master)](https://travis-ci.org/grom358/pharborist)

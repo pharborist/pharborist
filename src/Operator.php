@@ -28,6 +28,15 @@ class Operator extends PartialNode {
   }
 
   /**
+   * {@inheritdoc}
+   *
+   * Only return the operator child reference, not parser metadata properties.
+   */
+  public function getChildProperties() {
+    return ['operator' => $this->operator];
+  }
+
+  /**
    * Colon node. Only used by ternary operator.
    * @var PartialNode
    */

@@ -55,14 +55,14 @@ interface NodeInterface {
    * @param callable $callback An optional callback to filter by.
    * @return ParentNode
    */
-  public function parent(callable $callback = NULL);
+  public function parent(?callable $callback = NULL);
 
   /**
    * Get the ancestors of this node.
    * @param callable $callback An optional callback to filter by.
    * @return NodeCollection
    */
-  public function parents(callable $callback = NULL);
+  public function parents(?callable $callback = NULL);
 
   /**
    * Get ancestors up to the node matched by callback.
@@ -99,14 +99,14 @@ interface NodeInterface {
    * @param callable $callback An optional callback to filter by.
    * @return Node
    */
-  public function previous(callable $callback = NULL);
+  public function previous(?callable $callback = NULL);
 
   /**
    * Get the previous siblings of this node.
    * @param callable $callback An optional callback to filter by.
    * @return NodeCollection
    */
-  public function previousAll(callable $callback = NULL);
+  public function previousAll(?callable $callback = NULL);
 
   /**
    * Get all the preceding siblings up to but not including the match.
@@ -121,14 +121,14 @@ interface NodeInterface {
    * @param callable $callback An optional callback to filter by.
    * @return Node
    */
-  public function next(callable $callback = NULL);
+  public function next(?callable $callback = NULL);
 
   /**
    * Get all the following siblings.
    * @param callable $callback An optional callback to filter by.
    * @return NodeCollection
    */
-  public function nextAll(callable $callback = NULL);
+  public function nextAll(?callable $callback = NULL);
 
   /**
    * Get all the following siblings up to but not including the match.
@@ -143,7 +143,7 @@ interface NodeInterface {
    * @param callable $callback An optional callback to filter by.
    * @return NodeCollection
    */
-  public function siblings(callable $callback = NULL);
+  public function siblings(?callable $callback = NULL);
 
   /**
    * Insert this node before targets.

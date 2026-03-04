@@ -55,7 +55,7 @@ class ClassMemberNode extends ParentNode {
    * @todo Not all expressions can be default values, but I forget what sorts of
    * expressions are valid for this. Will need better sanity checking here.
    */
-  public static function create($name, ExpressionNode $value = NULL, $visibility = 'public') {
+  public static function create($name, ?ExpressionNode $value = NULL, $visibility = 'public') {
     $code = $visibility . ' $' . ltrim($name, '$');
     if ($value instanceof ExpressionNode) {
       $code .= ' = ' . $value->getText();

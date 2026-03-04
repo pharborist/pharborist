@@ -38,7 +38,7 @@ abstract class Node implements NodeInterface {
    */
   protected $next = NULL;
 
-  public function parent(callable $callback = NULL) {
+  public function parent(?callable $callback = NULL) {
     if ($callback) {
       return $callback($this->parent) ? $this->parent : NULL;
     }
@@ -47,7 +47,7 @@ abstract class Node implements NodeInterface {
     }
   }
 
-  public function parents(callable $callback = NULL) {
+  public function parents(?callable $callback = NULL) {
     $parents = [];
     $parent = $this->parent;
     while ($parent) {
@@ -117,7 +117,7 @@ abstract class Node implements NodeInterface {
     return -1;
   }
 
-  public function previous(callable $callback = NULL) {
+  public function previous(?callable $callback = NULL) {
     if ($callback) {
       return $callback($this->previous) ? $this->previous : NULL;
     }
@@ -126,7 +126,7 @@ abstract class Node implements NodeInterface {
     }
   }
 
-  public function previousAll(callable $callback = NULL) {
+  public function previousAll(?callable $callback = NULL) {
     $matches = [];
     $previous = $this->previous;
     while ($previous) {
@@ -154,7 +154,7 @@ abstract class Node implements NodeInterface {
     return new NodeCollection(array_reverse($matches), FALSE);
   }
 
-  public function next(callable $callback = NULL) {
+  public function next(?callable $callback = NULL) {
     if ($callback) {
       return $callback($this->next) ? $this->next : NULL;
     }
@@ -163,7 +163,7 @@ abstract class Node implements NodeInterface {
     }
   }
 
-  public function nextAll(callable $callback = NULL) {
+  public function nextAll(?callable $callback = NULL) {
     $matches = [];
     $next = $this->next;
     while ($next) {
@@ -194,7 +194,7 @@ abstract class Node implements NodeInterface {
   /**
    * {@inheritdoc}
    */
-  public function siblings(callable $callback = NULL) {
+  public function siblings(?callable $callback = NULL) {
     return $this->previousAll($callback)->add($this->nextAll($callback));
   }
 

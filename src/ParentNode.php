@@ -64,7 +64,7 @@ abstract class ParentNode extends Node implements ParentNodeInterface {
     return $matches;
   }
 
-  public function children(callable $callback = NULL) {
+  public function children(?callable $callback = NULL) {
     $matches = [];
     $child = $this->head;
     while ($child) {
@@ -178,7 +178,9 @@ abstract class ParentNode extends Node implements ParentNodeInterface {
       $child = $next;
     }
     foreach ($node->getChildProperties() as $name => $value) {
-      $this->{$name} = $value;
+      if (property_exists($this, $name)) {
+        $this->{$name} = $value;
+      }
     }
   }
 

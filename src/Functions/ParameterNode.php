@@ -275,7 +275,7 @@ class ParameterNode extends ParentNode {
   /**
    * Get the doc block tag associated with this parameter.
    *
-   * @return null|\phpDocumentor\Reflection\DocBlock\Tag\ParamTag
+   * @return null|\phpDocumentor\Reflection\DocBlock\Tags\Param
    *   The parameter tag or null if not found.
    */
   public function getDocBlockTag() {
@@ -297,8 +297,8 @@ class ParameterNode extends ParentNode {
     if (!$param_tag) {
       return FALSE;
     }
-    $types = $param_tag->getTypes();
-    return !empty($types);
+    $type = $param_tag->getType();
+    return $type !== null;
   }
 
   /**
@@ -318,7 +318,7 @@ class ParameterNode extends ParentNode {
     if (!$param_tag) {
       return $types;
     }
-    $types = Types::normalize($param_tag->getTypes());
+    $types = Types::normalize(Types::fromDocType($param_tag->getType()));
     if (empty($types)) {
       $types[] = 'mixed';
     }

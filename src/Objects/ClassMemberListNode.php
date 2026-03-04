@@ -155,8 +155,8 @@ class ClassMemberListNode extends ClassStatementNode {
     if (empty($var_tags)) {
       return $types;
     }
-    /** @var \phpDocumentor\Reflection\DocBlock\Tag\VarTag $var_tag */
+    /** @var \phpDocumentor\Reflection\DocBlock\Tags\Var_ $var_tag */
     $var_tag = reset($var_tags);
-    return Types::normalize($var_tag->getTypes());
+    return Types::normalize(Types::fromDocType($var_tag->getType()));
   }
 }

@@ -3,6 +3,10 @@ namespace Pharborist;
 
 use Pharborist\Namespaces\NamespaceNode;
 use phpDocumentor\Reflection\DocBlock;
+use phpDocumentor\Reflection\DocBlockFactory;
+use phpDocumentor\Reflection\DocBlock\Tags\Param;
+use phpDocumentor\Reflection\DocBlock\Tags\Return_;
+use phpDocumentor\Reflection\Types\Context;
 
 /**
  * A doc comment.
@@ -90,8 +94,9 @@ class DocCommentNode extends CommentNode {
           $aliases = $root_node->getClassAliases();
         }
       }
-      $context = new DocBlock\Context($namespace, $aliases);
-      $this->docBlock = new DocBlock($this->text, $context);
+      $context = new Context($namespace, $aliases);
+      $factory = DocBlockFactory::createInstance();
+      $this->docBlock = $factory->create($this->text, $context);
     }
     return $this->docBlock;
   }
@@ -103,23 +108,23 @@ class DocCommentNode extends CommentNode {
    *   Short description.
    */
   public function getShortDescription() {
-    return $this->getDocBlock()->getShortDescription();
+    return $this->getDocBlock()->getSummary();
   }
 
   /**
    * Get the full description or also known as long description.
    *
-   * @return string.
+   * @return string
    *   Long description.
    */
   public function getLongDescription() {
-    return (string) $this->getDocBlock()->getLongDescription();
+    return (string) $this->getDocBlock()->getDescription();
   }
 
   /**
    * Get the return tag.
    *
-   * @return DocBlock\Tag\ReturnTag
+   * @return Return_|false
    *   Return tag.
    */
   public function getReturn() {
@@ -130,7 +135,7 @@ class DocCommentNode extends CommentNode {
   /**
    * Get the parameter tags.
    *
-   * @return DocBlock\Tag\ParamTag[]
+   * @return Param[]
    *   Array of parameter tags.
    */
   public function getParameters() {
@@ -140,13 +145,13 @@ class DocCommentNode extends CommentNode {
   /**
    * Get the parameter tags by name.
    *
-   * @return DocBlock\Tag\ParamTag[]
+   * @return Param[]
    *   Associative array of parameter names to parameters.
    */
   public function getParametersByName() {
     $param_tags = $this->getDocBlock()->getTagsByName('param');
     $parameters = array();
-    /** @var \phpDocumentor\Reflection\DocBlock\Tag\ParamTag $param_tag */
+    /** @var Param $param_tag */
     foreach ($param_tags as $param_tag) {
       $name = ltrim($param_tag->getVariableName(), '$');
       $parameters[$name] = $param_tag;
@@ -160,13 +165,13 @@ class DocCommentNode extends CommentNode {
    * @param $parameterName
    *   Name of parameter to get tag for.
    *
-   * @return null|DocBlock\Tag\ParamTag
+   * @return null|Param
    *   The tag for parameter.
    */
   public function getParameter($parameterName) {
     $parameterName = ltrim($parameterName, '$');
     $param_tags = $this->getDocBlock()->getTagsByName('param');
-    /** @var \phpDocumentor\Reflection\DocBlock\Tag\ParamTag $param_tag */
+    /** @var Param $param_tag */
     foreach ($param_tags as $param_tag) {
       if (ltrim($param_tag->getVariableName(), '$') === $parameterName) {
         return $param_tag;

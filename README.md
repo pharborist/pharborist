@@ -3,14 +3,7 @@ pharborist
 
 ![Pharborist logo](./docs/logo_128px.png "Pharborist logo")
 
-A PHP library to query and transform PHP source code via tree operations.
-
-# Roadmap
-* [ ] Tests with 100% code coverage
-* [x] Integration with a third party library for PHPDoc comments
-* [ ] API to ease querying and transforming of the syntax tree
-* [ ] Build a PHP source code formatter using the library (Partially completed).
-* [ ] Build a PHP code check using the library
+A PHP library to query and transform PHP source code via tree operations. Originally built for https://www.drupal.org/project/drupalmoduleupgrader. Very minimally maintained.
 
 Below is an example of how the API might look once its more developed:
 

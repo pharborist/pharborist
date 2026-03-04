@@ -310,7 +310,7 @@ class NodeTest extends TestCase {
   public function testRemove() {
     $node = $this->createNode('test');
     $parent = $this->createParentNode();
-    $parent->addChild($node, 'test');
+    $parent->addChild($node);
     $this->assertSame($parent, $node->parent());
     $node->remove();
     $this->assertNull($node->parent());

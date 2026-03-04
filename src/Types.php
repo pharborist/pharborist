@@ -1,6 +1,9 @@
 <?php
 namespace Pharborist;
 
+use phpDocumentor\Reflection\Type;
+use phpDocumentor\Reflection\Types\Compound;
+
 /**
  * Helper class for phpDoc types.
  *
@@ -8,6 +11,29 @@ namespace Pharborist;
  * @see https://github.com/phpDocumentor/fig-standards/blob/master/proposed/phpdoc.md#appendix-a-types
  */
 class Types {
+
+  /**
+   * Convert a phpDocumentor Type object to an array of type strings.
+   *
+   * @param Type|null $type
+   *   Type object from phpDocumentor v5.
+   *
+   * @return string[]
+   *   Array of type strings.
+   */
+  public static function fromDocType(?Type $type) {
+    if ($type === null) {
+      return [];
+    }
+    if ($type instanceof Compound) {
+      $types = [];
+      foreach ($type as $subType) {
+        $types[] = (string) $subType;
+      }
+      return $types;
+    }
+    return [(string) $type];
+  }
   /**
    * Normalize phpDoc type keywords as per PSR-5.
    *

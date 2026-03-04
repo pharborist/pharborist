@@ -2,8 +2,9 @@
 namespace Pharborist;
 
 use Pharborist\Namespaces\UseDeclarationBlockNode;
+use PHPUnit\Framework\TestCase;
 
-class UseDeclarationStatementNodeTest extends \PHPUnit_Framework_TestCase {
+class UseDeclarationStatementNodeTest extends TestCase {
   public function testImportClass() {
     /** @var UseDeclarationBlockNode $use_block */
     $use_block = Parser::parseSnippet('use MyNamespace\MyClass;');

@@ -2,11 +2,12 @@
 namespace Pharborist;
 
 use Pharborist\Functions\ParameterNode;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Tests various methods of ParameterNode.
  */
-class ParameterNodeTest extends \PHPUnit_Framework_TestCase {
+class ParameterNodeTest extends TestCase {
   public function testParameterNode() {
     $source = <<<'EOF'
 <?php

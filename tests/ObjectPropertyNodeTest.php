@@ -2,8 +2,9 @@
 namespace Pharborist;
 
 use Pharborist\Objects\ObjectPropertyNode;
+use PHPUnit\Framework\TestCase;
 
-class ObjectPropertyNodeTest extends \PHPUnit_Framework_TestCase {
+class ObjectPropertyNodeTest extends TestCase {
   public function testGetRootProperty() {
     /** @var ObjectPropertyNode $property */
     $property = Parser::parseExpression('$foo->bar->baz');

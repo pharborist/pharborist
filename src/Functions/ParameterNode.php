@@ -127,7 +127,7 @@ class ParameterNode extends ParentNode {
   public function setReference($is_reference) {
     if ($is_reference) {
       if (!isset($this->reference)) {
-        $this->reference = Token::reference();
+        $this->reference = Token::variableReference();
         $this->name->before($this->reference);
       }
     }

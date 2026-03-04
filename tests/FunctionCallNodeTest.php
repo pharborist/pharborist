@@ -1,7 +1,9 @@
 <?php
 namespace Pharborist;
 
-class FunctionCallNodeTest extends \PHPUnit_Framework_TestCase {
+use PHPUnit\Framework\TestCase;
+
+class FunctionCallNodeTest extends TestCase {
   public function testName() {
     /** @var \Pharborist\Functions\FunctionCallNode $function_call */
     $function_call = Parser::parseExpression('test()');

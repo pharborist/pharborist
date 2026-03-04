@@ -1,7 +1,9 @@
 <?php
 namespace Pharborist;
 
-class ClassMethodNodeTest extends \PHPUnit_Framework_TestCase {
+use PHPUnit\Framework\TestCase;
+
+class ClassMethodNodeTest extends TestCase {
   public function testGetFullyQualifiedName() {
     /** @var \Pharborist\Objects\ClassNode $class */
     $class = Parser::parseSnippet('class Foo { public function baz() {} }');

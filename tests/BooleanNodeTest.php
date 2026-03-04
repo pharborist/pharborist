@@ -2,8 +2,9 @@
 namespace Pharborist;
 
 use Pharborist\Types\BooleanNode;
+use PHPUnit\Framework\TestCase;
 
-class BooleanNodeTest extends \PHPUnit_Framework_TestCase {
+class BooleanNodeTest extends TestCase {
   public function testCreate() {
     $true = BooleanNode::create(TRUE);
     $this->assertEquals('TRUE', $true->getText());

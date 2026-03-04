@@ -1,7 +1,9 @@
 <?php
 namespace Pharborist;
 
-class SingleInheritanceNodeTest extends \PHPUnit_Framework_TestCase {
+use PHPUnit\Framework\TestCase;
+
+class SingleInheritanceNodeTest extends TestCase {
   public function testGetPropertyNames() {
     /** @var \Pharborist\Objects\ClassNode $class */
     $class = Parser::parseSnippet('class Foo { protected $bar; public $baz; }');

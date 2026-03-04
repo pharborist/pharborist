@@ -4,8 +4,9 @@ namespace Pharborist;
 
 use Pharborist\Objects\ClassMemberListNode;
 use Pharborist\Objects\ClassNode;
+use PHPUnit\Framework\TestCase;
 
-class ClassMemberListNodeTest extends \PHPUnit_Framework_TestCase {
+class ClassMemberListNodeTest extends TestCase {
   public function testStatic() {
     /** @var ClassNode $class_node */
     $class_node = Parser::parseSnippet('class Foo { public static $bar; }');
@@ -26,10 +27,8 @@ class ClassMemberListNodeTest extends \PHPUnit_Framework_TestCase {
     $this->assertEquals('protected static $doodle;', $b->getText());
   }
 
-  /**
-   * @expectedException \BadMethodCallException
-   */
   public function testRemoveVisibility() {
+    $this->expectException(\BadMethodCallException::class);
     /** @var ClassNode $class_node */
     $class_node = Parser::parseSnippet('class Foo { public $wrassle; }');
     /** @var ClassMemberListNode $property */

@@ -1,7 +1,9 @@
 <?php
 namespace Pharborist;
 
-class ParentNodeTest extends \PHPUnit_Framework_TestCase {
+use PHPUnit\Framework\TestCase;
+
+class ParentNodeTest extends TestCase {
   /**
    * Create mock ParentNode.
    * @return ParentNode
@@ -36,10 +38,8 @@ class ParentNodeTest extends \PHPUnit_Framework_TestCase {
     $this->assertEquals('3', $parent->firstChild()->next()->next()->getText());
   }
 
-  /**
-   * @expectedException \InvalidArgumentException
-   */
   public function testInvalidPrepend() {
+    $this->expectException(\InvalidArgumentException::class);
     $parent = $this->createParentNode();
     $parent->prepend(NULL);
   }
@@ -53,10 +53,8 @@ class ParentNodeTest extends \PHPUnit_Framework_TestCase {
     $this->assertEquals('2', $parent->firstChild()->next()->next()->getText());
   }
 
-  /**
-   * @expectedException \InvalidArgumentException
-   */
   public function testInvalidAppend() {
+    $this->expectException(\InvalidArgumentException::class);
     $parent = $this->createParentNode();
     $parent->append(NULL);
   }

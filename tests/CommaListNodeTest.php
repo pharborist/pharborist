@@ -1,7 +1,9 @@
 <?php
 namespace Pharborist;
 
-class CommaListNodeTest extends \PHPUnit_Framework_TestCase {
+use PHPUnit\Framework\TestCase;
+
+class CommaListNodeTest extends TestCase {
   /**
    * Create mock Node.
    * @param $text

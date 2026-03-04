@@ -1,7 +1,9 @@
 <?php
 namespace Pharborist;
 
-class TokenTest extends \PHPUnit_Framework_TestCase {
+use PHPUnit\Framework\TestCase;
+
+class TokenTest extends TestCase {
   /**
    * Helper function to tokenize a single PHP token.
    *
@@ -265,10 +267,8 @@ class TokenTest extends \PHPUnit_Framework_TestCase {
     $this->assertToken($tokens[0], Token::inlineHtml('<html>'));
   }
 
-  /**
-   * @expectedException \InvalidArgumentException
-   */
   public function testInvalid() {
+    $this->expectException(\InvalidArgumentException::class);
     $this->assertPhpToken('$42', NULL);
   }
 

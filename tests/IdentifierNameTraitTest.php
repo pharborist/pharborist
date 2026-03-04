@@ -1,7 +1,9 @@
 <?php
 namespace Pharborist;
 
-class IdentifierNameTraitTest extends \PHPUnit_Framework_TestCase {
+use PHPUnit\Framework\TestCase;
+
+class IdentifierNameTraitTest extends TestCase {
   public function testId() {
     $snippet = <<<'EOF'
 namespace Test {
@@ -21,10 +23,8 @@ EOF;
     $this->assertFalse($function->inNamespace('\Dummy\Test'));
   }
 
-  /**
-   * @expectedException \InvalidArgumentException
-   */
   public function testInvalid() {
+    $this->expectException(\InvalidArgumentException::class);
     $snippet = <<<'EOF'
 namespace Test {
   function hello_world() {

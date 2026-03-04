@@ -1,7 +1,9 @@
 <?php
 namespace Pharborist;
 
-class TokenIteratorTest extends \PHPUnit_Framework_TestCase {
+use PHPUnit\Framework\TestCase;
+
+class TokenIteratorTest extends TestCase {
   public function testSingle() {
     $test = new TokenNode(T_STRING, 'test', 'source', 1, 0, 1, 0);
     $iterator = new TokenIterator([$test]);

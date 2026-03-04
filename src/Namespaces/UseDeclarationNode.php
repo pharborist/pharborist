@@ -144,7 +144,8 @@ class UseDeclarationNode extends ParentNode {
       return $this->alias->getText();
     }
     else {
-      return $this->name->lastChild()->getText();
+      $parts = $this->name->getPathParts();
+      return end($parts);
     }
   }
 }

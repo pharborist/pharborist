@@ -3,8 +3,9 @@ namespace Pharborist;
 
 use Pharborist\Types\IntegerNode;
 use Pharborist\Types\StringNode;
+use PHPUnit\Framework\TestCase;
 
-class NodeCollectionTest extends \PHPUnit_Framework_TestCase {
+class NodeCollectionTest extends TestCase {
   /**
    * Create mock ParentNode.
    * @return ParentNode
@@ -472,10 +473,8 @@ class NodeCollectionTest extends \PHPUnit_Framework_TestCase {
     $this->assertSame($union, $c2);
   }
 
-  /**
-   * @expectedException \InvalidArgumentException
-   */
   public function testInvalidAdd() {
+    $this->expectException(\InvalidArgumentException::class);
     $collection = new NodeCollection([], FALSE);
     $collection->add(NULL);
   }
@@ -488,10 +487,8 @@ class NodeCollectionTest extends \PHPUnit_Framework_TestCase {
     $this->assertTrue(isset($collection[0]));
   }
 
-  /**
-   * @expectedException \BadMethodCallException
-   */
   public function testSet() {
+    $this->expectException(\BadMethodCallException::class);
     $root = new RootNode();
     $first = $this->createNode();
     $first->appendTo($root);
@@ -500,10 +497,8 @@ class NodeCollectionTest extends \PHPUnit_Framework_TestCase {
     $collection[0] = $second;
   }
 
-  /**
-   * @expectedException \BadMethodCallException
-   */
   public function testUnset() {
+    $this->expectException(\BadMethodCallException::class);
     $root = new RootNode();
     $first = $this->createNode();
     $first->appendTo($root);

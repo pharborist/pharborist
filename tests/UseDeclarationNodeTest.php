@@ -2,8 +2,9 @@
 namespace Pharborist;
 
 use Pharborist\Namespaces\UseDeclarationNode;
+use PHPUnit\Framework\TestCase;
 
-class UseDeclarationNodeTest extends \PHPUnit_Framework_TestCase {
+class UseDeclarationNodeTest extends TestCase {
 
   public function testImports() {
     $snippet = <<<'EOF'
@@ -98,10 +99,8 @@ EOF;
     $this->assertEquals('Foobar', $declaration->getText());
   }
 
-  /**
-   * @expectedException \InvalidArgumentException
-   */
   public function testSetAliasInvalidArgument() {
+    $this->expectException(\InvalidArgumentException::class);
     /** @var \Pharborist\Namespaces\UseDeclarationBlockNode $declaration_block */
     $declaration_block = Parser::parseSnippet('use Cleese as Chapman;');
     $declaration = $declaration_block->getDeclarationStatements()[0]->getDeclarations()[0];

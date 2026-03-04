@@ -2,7 +2,9 @@
 
 namespace Pharborist;
 
-class TryCatchNodeTest extends \PHPUnit_Framework_TestCase {
+use PHPUnit\Framework\TestCase;
+
+class TryCatchNodeTest extends TestCase {
   public function testCatches() {
     /** @var \Pharborist\Exceptions\TryCatchNode $tryCatch */
     $tryCatch = Parser::parseSnippet('try { foo(); } catch (\InvalidArgumentException $e) {}');

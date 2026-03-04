@@ -11,7 +11,7 @@ class ParameterNodeCollection extends NodeCollection {
    *
    * @return boolean
    */
-  public function offsetExists($offset) {
+  public function offsetExists(mixed $offset): bool {
     if (is_string($offset)) {
       // To deal with php allowing function test($a, $a) loop in reverse.
       foreach (array_reverse($this->nodes) as $node) {
@@ -33,7 +33,7 @@ class ParameterNodeCollection extends NodeCollection {
    *
    * @return ParameterNode
    */
-  public function offsetGet($offset) {
+  public function offsetGet(mixed $offset): mixed {
     if (is_string($offset)) {
       // To deal with php allowing function test($a, $a) loop in reverse.
       foreach (array_reverse($this->nodes) as $node) {

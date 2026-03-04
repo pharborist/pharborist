@@ -40,14 +40,14 @@ class NodeCollection implements \IteratorAggregate, \Countable, \ArrayAccess {
   /**
    * Implements \IteratorAggregate::getIterator().
    */
-  public function getIterator() {
+  public function getIterator(): \Traversable {
     return new \ArrayIterator($this->nodes);
   }
 
   /**
    * Implements \Countable::count().
    */
-  public function count() {
+  public function count(): int {
     return count($this->nodes);
   }
 
@@ -58,7 +58,7 @@ class NodeCollection implements \IteratorAggregate, \Countable, \ArrayAccess {
    *
    * @return boolean
    */
-  public function offsetExists($offset) {
+  public function offsetExists(mixed $offset): bool {
     return isset($this->nodes[$offset]);
   }
 
@@ -69,7 +69,7 @@ class NodeCollection implements \IteratorAggregate, \Countable, \ArrayAccess {
    *
    * @return Node
    */
-  public function offsetGet($offset) {
+  public function offsetGet(mixed $offset): mixed {
     return $this->nodes[$offset];
   }
 
@@ -81,7 +81,7 @@ class NodeCollection implements \IteratorAggregate, \Countable, \ArrayAccess {
    *
    * @throws \BadMethodCallException
    */
-  public function offsetSet($offset, $value) {
+  public function offsetSet(mixed $offset, mixed $value): void {
     throw new \BadMethodCallException('NodeCollection offsetSet not supported');
   }
 
@@ -92,7 +92,7 @@ class NodeCollection implements \IteratorAggregate, \Countable, \ArrayAccess {
    *
    * @throws \BadMethodCallException
    */
-  public function offsetUnset($offset) {
+  public function offsetUnset(mixed $offset): void {
     throw new \BadMethodCallException('NodeCollection offsetUnset not supported');
   }
 
@@ -249,7 +249,7 @@ class NodeCollection implements \IteratorAggregate, \Countable, \ArrayAccess {
    * @param callable $callback An optional callback to filter by.
    * @return NodeCollection
    */
-  public function parent(callable $callback = NULL) {
+  public function parent(?callable $callback = NULL) {
     $matches = [];
     foreach ($this->nodes as $node) {
       if ($match = $node->parent($callback)) {
@@ -265,7 +265,7 @@ class NodeCollection implements \IteratorAggregate, \Countable, \ArrayAccess {
    * @param callable $callback An optional callback to filter by.
    * @return NodeCollection
    */
-  public function parents(callable $callback = NULL) {
+  public function parents(?callable $callback = NULL) {
     $matches = [];
     foreach ($this->nodes as $node) {
       $matches = array_merge($matches, $node->parents($callback)->nodes);
@@ -310,7 +310,7 @@ class NodeCollection implements \IteratorAggregate, \Countable, \ArrayAccess {
    * @param callable $callback An optional callback to filter by.
    * @return NodeCollection
    */
-  public function children(callable $callback = NULL) {
+  public function children(?callable $callback = NULL) {
     $matches = [];
     foreach ($this->nodes as $node) {
       if ($node instanceof ParentNode) {
@@ -341,7 +341,7 @@ class NodeCollection implements \IteratorAggregate, \Countable, \ArrayAccess {
    * @param callable $callback An optional callback to filter by.
    * @return NodeCollection
    */
-  public function previous(callable $callback = NULL) {
+  public function previous(?callable $callback = NULL) {
     $matches = [];
     foreach ($this->nodes as $node) {
       if ($match = $node->previous($callback)) {
@@ -357,7 +357,7 @@ class NodeCollection implements \IteratorAggregate, \Countable, \ArrayAccess {
    * @param callable $callback An optional callback to filter by.
    * @return NodeCollection
    */
-  public function previousAll(callable $callback = NULL) {
+  public function previousAll(?callable $callback = NULL) {
     $matches = [];
     foreach ($this->nodes as $node) {
       $matches = array_merge($matches, $node->previousAll($callback)->nodes);
@@ -387,7 +387,7 @@ class NodeCollection implements \IteratorAggregate, \Countable, \ArrayAccess {
    * @param callable $callback An optional callback to filter by.
    * @return NodeCollection
    */
-  public function next(callable $callback = NULL) {
+  public function next(?callable $callback = NULL) {
     $matches = [];
     foreach ($this->nodes as $node) {
       if ($match = $node->next($callback)) {
@@ -403,7 +403,7 @@ class NodeCollection implements \IteratorAggregate, \Countable, \ArrayAccess {
    * @param callable $callback An optional callback to filter by.
    * @return NodeCollection
    */
-  public function nextAll(callable $callback = NULL) {
+  public function nextAll(?callable $callback = NULL) {
     $matches = [];
     foreach ($this->nodes as $node) {
       $matches = array_merge($matches, $node->nextAll($callback)->nodes);
@@ -432,7 +432,7 @@ class NodeCollection implements \IteratorAggregate, \Countable, \ArrayAccess {
    * @param callable $callback An optional callback to filter by.
    * @return NodeCollection
    */
-  public function siblings(callable $callback = NULL) {
+  public function siblings(?callable $callback = NULL) {
     $matches = [];
     foreach ($this->nodes as $node) {
       $matches = array_merge($matches, $node->siblings($callback)->nodes);

@@ -1493,7 +1493,7 @@ class Parser {
    * @param Node $static
    * @return AnonymousFunctionNode
    */
-  private function anonymousFunction(Node $static = NULL) {
+  private function anonymousFunction(?Node $static = NULL) {
     $node = new AnonymousFunctionNode();
     if ($static) {
       $node->addChild($static);

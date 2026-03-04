@@ -359,14 +359,15 @@ class ParameterNode extends ParentNode {
     $this->setReference($reflector->isPassedByReference());
 
     // Match the reflector's type hint.
-    if ($reflector->isArray()) {
-      $this->setTypeHint('array');
-    }
-    elseif ($reflector->isCallable()) {
-      $this->setTypeHint('callable');
-    }
-    elseif ($class = $reflector->getClass()) {
-      $this->setTypeHint($class->getName());
+    $type = $reflector->getType();
+    if ($type instanceof \ReflectionNamedType) {
+      $name = $type->getName();
+      if (!$type->isBuiltin()) {
+        $this->setTypeHint($name);
+      }
+      elseif ($name === 'array' || $name === 'callable') {
+        $this->setTypeHint($name);
+      }
     }
 
     // Match the reflector's default value, if there is one. It will be a

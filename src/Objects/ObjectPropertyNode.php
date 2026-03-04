@@ -16,6 +16,11 @@ class ObjectPropertyNode extends ParentNode implements VariableExpressionNode {
   protected $object;
 
   /**
+   * @var TokenNode
+   */
+  protected $operator;
+
+  /**
    * @var Node
    */
   protected $property;

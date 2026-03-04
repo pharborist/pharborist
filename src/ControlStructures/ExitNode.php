@@ -9,6 +9,16 @@ use Pharborist\ExpressionNode;
  */
 class ExitNode extends ParentNode implements ExpressionNode {
   /**
+   * @var \Pharborist\TokenNode
+   */
+  protected $openParen;
+
+  /**
+   * @var \Pharborist\TokenNode
+   */
+  protected $closeParen;
+
+  /**
    * @var ExpressionNode
    */
   protected $expression;

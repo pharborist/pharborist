@@ -195,7 +195,7 @@ abstract class SingleInheritanceNode extends StatementNode {
    *
    * @return $this
    */
-  public function createProperty($name, ExpressionNode $value = NULL, $visibility = 'public') {
+  public function createProperty($name, ?ExpressionNode $value = NULL, $visibility = 'public') {
     return $this->appendProperty(ClassMemberNode::create($name, $value, $visibility));
   }
 

@@ -25,7 +25,7 @@ interface ParentNodeInterface extends NodeInterface {
    * @param callable $callback An optional callback to filter by.
    * @return NodeCollection
    */
-  public function children(callable $callback = NULL);
+  public function children(?callable $callback = NULL);
 
   /**
    * Remove all child nodes.

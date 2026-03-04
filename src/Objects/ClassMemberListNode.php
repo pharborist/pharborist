@@ -20,6 +20,16 @@ class ClassMemberListNode extends ClassStatementNode {
   /**
    * @var TokenNode
    */
+  protected $abstract;
+
+  /**
+   * @var TokenNode
+   */
+  protected $final;
+
+  /**
+   * @var TokenNode
+   */
   protected $static;
 
   /**

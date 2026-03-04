@@ -34,6 +34,15 @@ class InterfaceNodeTest extends TestCase {
     $this->assertNull($interface->getMethod('harrr'));
   }
 
+  public function testParseReturnByReference() {
+    /** @var \Pharborist\Objects\InterfaceNode $interface */
+    $interface = Parser::parseSnippet('interface Foo { public function &getBar(); }');
+    $method = $interface->getMethod('getBar');
+    $this->assertNotNull($method->getReference());
+    $this->assertEquals('&', $method->getReference()->getText());
+    $this->assertEquals('getBar', $method->getName()->getText());
+  }
+
   public function testGetConstants() {
     /** @var \Pharborist\Objects\InterfaceNode $interface */
     $interface = Parser::parseSnippet('interface Foo { const ANSWER = 42; }');

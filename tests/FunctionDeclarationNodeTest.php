@@ -37,6 +37,14 @@ class FunctionDeclarationNodeTest extends TestCase {
     $this->assertEquals('function hello() {}', $func->getText());
   }
 
+  public function testParseReturnByReference() {
+    /** @var \Pharborist\Functions\FunctionDeclarationNode $func */
+    $func = Parser::parseSnippet('function &foo() { return $bar; }');
+    $this->assertNotNull($func->getReference());
+    $this->assertEquals('&', $func->getReference()->getText());
+    $this->assertEquals('foo', $func->getName()->getText());
+  }
+
   public function testReturnType() {
     /** @var \Pharborist\Functions\FunctionDeclarationNode $func */
     $func = Parser::parseSnippet('function hello() {}');

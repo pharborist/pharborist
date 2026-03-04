@@ -2174,7 +2174,7 @@ class Parser {
     $node = new FunctionDeclarationNode();
     $this->matchDocComment($node);
     $this->mustMatch(T_FUNCTION, $node);
-    $this->tryMatch(T_AMPERSAND_FOLLOWED_BY_VAR_OR_VARARG, $node, 'reference');
+    $this->tryMatch(T_AMPERSAND_NOT_FOLLOWED_BY_VAR_OR_VARARG, $node, 'reference');
     $name_node = new NameNode();
     $this->mustMatch(T_STRING, $name_node, NULL, TRUE);
     $node->addChild($name_node, 'name');
@@ -2660,7 +2660,7 @@ class Parser {
     $node->mergeNode($doc_comment);
     $node->mergeNode($modifiers);
     $this->mustMatch(T_FUNCTION, $node);
-    $this->tryMatch(T_AMPERSAND_FOLLOWED_BY_VAR_OR_VARARG, $node, 'reference');
+    $this->tryMatch(T_AMPERSAND_NOT_FOLLOWED_BY_VAR_OR_VARARG, $node, 'reference');
     $this->mustMatch(T_STRING, $node, 'name');
     $this->parameterList($node);
     if ($modifiers->getAbstract()) {
@@ -2808,7 +2808,7 @@ class Parser {
     }
     !$is_static && $this->tryMatch(T_STATIC, $node, 'static');
     $this->mustMatch(T_FUNCTION, $node);
-    $this->tryMatch(T_AMPERSAND_FOLLOWED_BY_VAR_OR_VARARG, $node, 'reference');
+    $this->tryMatch(T_AMPERSAND_NOT_FOLLOWED_BY_VAR_OR_VARARG, $node, 'reference');
     $this->mustMatch(T_STRING, $node, 'name');
     $this->parameterList($node);
     $this->endStatement($node);

@@ -3,7 +3,7 @@ pharborist
 
 ![Pharborist logo](./docs/logo_128px.png "Pharborist logo")
 
-A PHP library to query and transform PHP source code via tree operations. Originally built for https://www.drupal.org/project/drupalmoduleupgrader. Very minimally maintained.
+A PHP library to query and transform PHP source code via tree operations. Originally built for https://www.drupal.org/project/drupalmoduleupgrader. Very minimally maintained. Unless another project explicitly requires this, [use Rector instead](https://getrector.com/). 
 
 Below is an example of how the API might look once its more developed:
 

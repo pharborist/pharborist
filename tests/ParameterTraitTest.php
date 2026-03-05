@@ -3,6 +3,7 @@ namespace Pharborist;
 
 use Pharborist\Functions\FunctionDeclarationNode;
 use Pharborist\Functions\ParameterNode;
+use PHPUnit\Framework\Attributes\Depends;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -44,9 +45,7 @@ class ParameterTraitTest extends TestCase {
     $this->assertEquals('$c', $parameters[3]);
   }
 
-  /**
-   * @depends testHasParameter
-   */
+  #[Depends('testHasParameter')]
   public function testAppendParameter() {
     /** @var \Pharborist\Functions\FunctionDeclarationNode $function */
     $function = Parser::parseSnippet('function baz() {}');
@@ -65,9 +64,6 @@ class ParameterTraitTest extends TestCase {
     Parser::parseSnippet('function foo($bar) {}')->hasParameter(1);
   }
 
-  /**
-   * @requires PHP 5.6
-   */
   public function testIsVariadic() {
     $doc = <<<'END'
 <?php

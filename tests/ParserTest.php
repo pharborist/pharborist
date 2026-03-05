@@ -1957,9 +1957,6 @@ EOF;
     $this->parseExpression('null', '\Pharborist\Types\NullNode');
   }
 
-  /**
-   * @requires PHP 5.5
-   */
   public function testFinally() {
     $snippet = <<<'EOF'
 try { try_body(); }
@@ -1972,9 +1969,6 @@ EOF;
     $this->assertEquals('{ finally_body(); }', $try_catch->getFinally()->getText());
   }
 
-  /**
-   * @requires PHP 5.6
-   */
   public function testPower() {
     $this->parseStaticExpression('1 ** 2', '\Pharborist\Operators\PowerNode');
     $this->parseExpression('1 ** 2', '\Pharborist\Operators\PowerNode');

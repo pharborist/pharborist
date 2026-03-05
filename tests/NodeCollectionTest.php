@@ -6,20 +6,12 @@ use Pharborist\Types\StringNode;
 use PHPUnit\Framework\TestCase;
 
 class NodeCollectionTest extends TestCase {
-  /**
-   * Create mock ParentNode.
-   * @return ParentNode
-   */
-  protected function createParentNode() {
-    return $this->getMockForAbstractClass('\Pharborist\ParentNode');
+  protected function createParentNode(): TestParentNode {
+    return new TestParentNode();
   }
 
-  /**
-   * Create mock Node.
-   * @return Node
-   */
-  protected function createNode() {
-    return $this->getMockForAbstractClass('\Pharborist\Node');
+  protected function createNode(): TestNode {
+    return new TestNode();
   }
 
   public function testParent() {

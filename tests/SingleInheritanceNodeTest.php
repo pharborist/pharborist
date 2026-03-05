@@ -1,6 +1,7 @@
 <?php
 namespace Pharborist;
 
+use PHPUnit\Framework\Attributes\Depends;
 use PHPUnit\Framework\TestCase;
 
 class SingleInheritanceNodeTest extends TestCase {
@@ -93,9 +94,7 @@ class SingleInheritanceNodeTest extends TestCase {
     $this->assertEquals('Bar', $trait->getPath());
   }
 
-  /**
-   * @depends testHasProperty
-   */
+  #[Depends('testHasProperty')]
   public function testCreateProperty() {
     /** @var \Pharborist\Objects\ClassNode $class */
     $class = Parser::parseSnippet('class Foo {}');

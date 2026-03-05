@@ -272,17 +272,11 @@ class TokenTest extends TestCase {
     $this->assertPhpToken('$42', NULL);
   }
 
-  /**
-   * @requires PHP 5.5
-   */
   public function test55() {
     $this->assertPhpToken('yield', Token::_yield());
     $this->assertPhpToken('finally', Token::_finally());
   }
 
-  /**
-   * @requires PHP 5.6
-   */
   public function test56() {
     $this->assertPhpToken('...', Token::splat());
   }

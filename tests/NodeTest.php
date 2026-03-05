@@ -6,25 +6,12 @@ use Pharborist\Types\ArrayPairNode;
 use PHPUnit\Framework\TestCase;
 
 class NodeTest extends TestCase {
-  /**
-   * Create mock ParentNode.
-   * @return ParentNode
-   */
-  protected function createParentNode() {
-    return $this->getMockForAbstractClass('\Pharborist\ParentNode');
+  protected function createParentNode(): TestParentNode {
+    return new TestParentNode();
   }
 
-  /**
-   * Create mock Node.
-   * @param $text
-   * @return Node
-   */
-  protected function createNode($text) {
-    $mock = $this->getMockForAbstractClass('\Pharborist\Node');
-    $mock->expects($this->any())
-      ->method('getText')
-      ->will($this->returnValue($text));
-    return $mock;
+  protected function createNode($text): TestNode {
+    return new TestNode($text);
   }
 
   public function testParents() {

@@ -16,6 +16,9 @@
   "autoload": {
     "psr-4" : {"Pharborist\\": "src/"}
   },
+  "autoload-dev": {
+    "psr-4" : {"Pharborist\\": "tests/"}
+  },
   "require": {
     "php": ">=8.1",
     "phpdocumentor/reflection-docblock": "^5.0"

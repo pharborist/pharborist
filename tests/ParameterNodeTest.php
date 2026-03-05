@@ -215,9 +215,6 @@ EOF;
     $this->assertNull($parameter->getTypeHint());
   }
 
-  /**
-   * @requires PHP 5.6
-   */
   public function testVariadic() {
     $source = <<<'EOF'
 <?php

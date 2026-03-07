@@ -480,7 +480,7 @@ abstract class Node implements NodeInterface {
    */
   public function is($test) {
     if (is_callable($test)) {
-      return (boolean) $test($this);
+      return (bool) $test($this);
     }
     elseif (is_string($test)) {
       return $this->is(Filter::isInstanceOf($test));

@@ -113,13 +113,11 @@ class TokenTest extends TestCase {
     $this->assertPhpToken('or', Token::logicalOr());
     $this->assertPhpToken('xor', Token::logicalXor());
     $this->assertPhpToken('(array)', Token::arrayCast());
-    $this->assertPhpToken('(bool)', Token::booleanCast(), FALSE);
-    $this->assertPhpToken('(boolean)', Token::booleanCast());
+    $this->assertPhpToken('(bool)', Token::booleanCast());
     $this->assertPhpToken('(real)', Token::doubleCast(), FALSE);
     $this->assertPhpToken('(float)', Token::doubleCast(), FALSE);
     $this->assertPhpToken('(double)', Token::doubleCast());
-    $this->assertPhpToken('(int)', Token::integerCast(), FALSE);
-    $this->assertPhpToken('(integer)', Token::integerCast());
+    $this->assertPhpToken('(int)', Token::integerCast());
     $this->assertPhpToken('(object)', Token::objectCast());
     $this->assertPhpToken('(string)', Token::stringCast());
     $this->assertPhpToken('(unset)', Token::unsetCast());

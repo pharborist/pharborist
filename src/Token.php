@@ -408,7 +408,7 @@ EOF;
   }
 
   public static function booleanCast() {
-    return new TokenNode(T_BOOL_CAST, '(boolean)');
+    return new TokenNode(T_BOOL_CAST, '(bool)');
   }
 
   public static function _break() {
@@ -652,7 +652,7 @@ EOF;
   }
 
   public static function integerCast() {
-    return new TokenNode(T_INT_CAST, '(integer)');
+    return new TokenNode(T_INT_CAST, '(int)');
   }
 
   public static function _interface() {
